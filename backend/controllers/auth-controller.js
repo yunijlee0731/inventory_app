@@ -1,3 +1,5 @@
+// TODO: HASH THE PASSWORD 
+
 const db = require("../config/db-config");
 
 exports.checkLogin = async (req, res) => {
@@ -26,16 +28,67 @@ exports.checkLogin = async (req, res) => {
                 success: false,
                 message: "No users with the username is found"
             });
-        }
-
-        console.log(data); // If data is found, send 200 response        
+        }       
     } catch (error) {
-        console.log("\t*************** YJ: ERROR in auth-controller.js: PRINTING STACK TRACE*************"); 
+        console.log("\t*************** YJ: ERROR in auth-controller.js in checkLogin function: PRINTING STACK TRACE*************"); 
         console.error("Error:", error);
         if (!res.headersSent) { // Check if headers are already sent
             return res.status(500).send({
                 success: false,
-                message: "*************** YJ: ERROR in auth-controller.js, in function checkLogin*************",
+                message: "ERROR in auth-controller.js, in checkLogin function",
+                error: error.message
+            });
+        }
+    }
+};
+
+exports.checkUserCreation = async (req, res) => {
+
+    // try {
+    //     // Hash the plain text password
+    //     const hashedPassword = await bcrypt.hash(plainTextPassword, 10);
+
+    //     // Store the hashed password in the database
+    //     const query = `
+    //         INSERT INTO users (first_name, last_name, username, password)
+    //         VALUES (?, ?, ?, ?)
+    //     `;
+    //     const values = [firstName, lastName, username, hashedPassword];
+
+    //     const [result] = await db.execute(query, values);
+
+    //     console.log('User registered with ID:', result.insertId);
+    // } catch (error) {
+    //     console.error('Error registering user:', error);
+    // }
+
+
+
+    try {
+        const [data] = await db.query('SELECT * FROM users WHERE username = ?', [req.body.username]); // using await to wait for the database query to complete
+        if (data.length === 0) { // username is not found in the database. user can be created!
+            const query = `
+                INSERT INTO users (first_name, last_name, username, password)
+                VALUES (?, ?, ?, ?)`;
+            const values = [req.body.firstname, req.body.lastname, req.body.username, req.body.password];
+            const [result] = await db.execute(query, values);
+
+            console.log('User registered with ID:', result.insertId);
+        }
+        else {
+            return res.status(404).send({ // If no data, send 404 response
+                success: false,
+                message: "User already exists!"
+            });
+        }
+        
+    } catch (error) {
+        console.log("\t*************** YJ: ERROR in auth-controller.js in checkUserCreation function: PRINTING STACK TRACE*************"); 
+        console.error("Error:", error);
+        if (!res.headersSent) { // Check if headers are already sent
+            return res.status(500).send({
+                success: false,
+                message: "ERROR in auth-controller.js, in checkUserCreation function",
                 error: error.message
             });
         }

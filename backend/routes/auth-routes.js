@@ -23,13 +23,12 @@ router.post('/login', validateUser, authController.checkLogin);
 
 // TODO: create get for sign up 
 router.get('/signup', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../frontend/static/signup.html'));    
 });
 // TODO: create post for sign up
     // middleware : check valid syntactically username and password - trim, normalize, etc - you could still use validateLogin.js 
     // controller: query DB - make sure user doesn't exist
         // sends response 
-router.post('/signup', (req, res) => {
-
-});
+router.post('/signup', validateUser, authController.checkUserCreation);
 
 module.exports = router; // Export the router

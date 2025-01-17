@@ -1,3 +1,4 @@
+// TODO: DELETE DB IF ONE EXISTS 
 const {check, validationResult} = require('express-validator'); // check is the function used to validate and sanitize inputs
 const morgan = require('morgan'); 
 const colors = require('colors');
@@ -23,7 +24,9 @@ app.use('/api/auth', authRoutes); // Whenever a request starts with this path, h
 app.use(cors());
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/static/index.html'));
+    // res.sendFile(path.join(__dirname, '../frontend_test/static/index.html'));
+    // res.sendFile(path.join(__dirname, '../frontend/src/App.js'));
+    res.json({"succes": true});
 }); 
 
 //******************* DATABASE *******************/
@@ -37,7 +40,7 @@ app.get('/', (req, res) => {
 // });
 //******************* DATABASE *******************/
 
-const port = process.env.PORT || 3000; // Port we will listen on, in cloud services, this might be const port = process.env.PORT || 3000; 
+const port = process.env.PORT || 3001; // Port we will listen on, in cloud services, this might be const port = process.env.PORT || 3000; 
 mySqlPool.query("SELECT 1").then(() => {
     console.log("MySQL DB is connected".bgCyan.white);
     app.listen(port, () => console.log(`This app is listening on port ${port}`.bgCyan.white)); // Function to listen on the port

@@ -3,18 +3,20 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 function Login() {
     
-    const [backendData, setBackendData] = useState([{}]);
+    // const [backendData, setBackendData] = useState([{}]);
     console.log("Does it reacher here")
 
-    useEffect(() => {
-      fetch("/api/auth/login").then(
-        response => response.json()
-      ).then(
-        data => {
-          setBackendData(data); 
-        }
-      )
-    }, [])
+    // useEffect(() => {
+    //   fetch("/api/auth/login")
+    //   console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!HEREEE");
+      // fetch("/api/auth/login").then(
+      //   response => response.json()
+      // ).then(
+      //   data => {
+      //     setBackendData(data); 
+      //   }
+      // )
+    // }, [])
 
     return (
         <div className="App">

@@ -13,7 +13,7 @@ var router = express.Router(); // a router is a mini version of the express app.
 // TODO: change file path when you create proper front end 
 router.get('/login', (req, res) => {
     // res.sendFile(path.join(__dirname, '../../frontend_test/static/login.html'));
-    console.log("called get");
+    console.log("NEW called get");
     res.json({"success": true});
 });
 

@@ -9,7 +9,6 @@ import SignUp from "./pages/SignUp";
 import ViewAllInventory from "./pages/ViewAllInventory";
 import TableDemo from "./pages/TableDemo";
 
-import GridExample from "./pages/UserInventory";
 import UserInventory from "./pages/UserInventory";
 
 function App() {
@@ -18,11 +17,11 @@ function App() {
       <Router>
         <Routes>
           {/* <Route path="/" element={<Login />} /> */}
-          <Route path="/" element={<GridExample />} />
+          <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/user-inventory" element={<UserInventory />} />
-          <Route path="/viewallinventory" element={<ViewAllInventory />} />
+          <Route path="/view-all-inventory" element={<ViewAllInventory />} />
         </Routes>
       </Router>
     </div>

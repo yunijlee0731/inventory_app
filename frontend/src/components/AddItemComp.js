@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
+import { useNavigate } from "react-router-dom";
 
 function AddItemComp() {
+  const navigate = useNavigate();
   // State to manage API response messages
   const [message, setMessage] = useState("");
   const [messageVariant, setMessageVariant] = useState("success");
@@ -27,23 +29,22 @@ function AddItemComp() {
       quantity,
     }),
   };
+  const refreshPage = () => {
+    window.location.reload();
+  };
 
   const handleSubmitClick = async (event) => {
     event.preventDefault();
     try {
-      // console.log("!!!!!!!!!!!!!!requestOptions.body.userId");
-      // console.log(requestOptions.body.userId);
-      // console.log(requestOptions.body.itemName);
-      // console.log(requestOptions.body.itemDes);
-      // console.log(requestOptions.body.quantity);
-
       const response = await fetch("/api/inventory/add-item", requestOptions);
       const data = await response.json();
       console.log(data.success);
 
+      // TODO: When item is succesfully added, you need to clear the parameters since they are saved from the last one, then you need to refresh the table to update it with the new entry
       if (data.success === true) {
         setMessage(data.message);
         setMessageVariant("success");
+        refreshPage();
       } else if (data.success === false) {
         setMessage(data.message);
         setMessageVariant("danger");

@@ -9,6 +9,7 @@ const path = require("path");
 const bodyParser = require("body-parser"); // import middleware, will prase the request for the creation of the req.body object
 const cors = require("cors"); // provides express middleware
 const authRoutes = require("./routes/auth-routes"); // import authentication route, allows you to reuse logic from this file
+const inventoryRoutes = require("./routes/inventory-routes");
 const mySqlPool = require("./config/db-config");
 
 dotenv.config();
@@ -17,6 +18,7 @@ app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false })); // .urlencoded - parsing URL encoded data from the body, extended: false uses QueryString library
 app.use(express.json());
 app.use("/api/auth", authRoutes); // Whenever a request starts with this path, hand it off to this router or middleware.
+app.use("api/inventory", inventoryRoutes);
 
 app.use(cors());
 

@@ -10,9 +10,10 @@ exports.checkLogin = async (req, res) => {
       // username is found in database
       if (data[0].password === req.body.password) {
         // username and password match
-        console.log("\tYJ: DEBUGGING user validated");
         return res.status(200).send({
           success: true,
+          username: req.body.username,
+          id: data[0].id,
           message: "Username and password match found",
           data,
         });

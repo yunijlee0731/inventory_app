@@ -1,12 +1,61 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 
 function AddItemComp() {
+  // State to manage API response messages
+  const [message, setMessage] = useState("");
+  const [messageVariant, setMessageVariant] = useState("success");
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [itemName, setItemName] = useState("");
+  const [itemDes, setItemDes] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const userId = sessionStorage.getItem("userId");
+
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      userId,
+      itemName,
+      itemDes,
+      quantity,
+    }),
+  };
+
+  const handleSubmitClick = async (event) => {
+    event.preventDefault();
+    try {
+      // console.log("!!!!!!!!!!!!!!requestOptions.body.userId");
+      // console.log(requestOptions.body.userId);
+      // console.log(requestOptions.body.itemName);
+      // console.log(requestOptions.body.itemDes);
+      // console.log(requestOptions.body.quantity);
+
+      const response = await fetch("/api/inventory/add-item", requestOptions);
+      const data = await response.json();
+      console.log(data.success);
+
+      if (data.success === true) {
+        setMessage(data.message);
+        setMessageVariant("success");
+      } else if (data.success === false) {
+        setMessage(data.message);
+        setMessageVariant("danger");
+      }
+    } catch (error) {
+      setMessage(
+        "An unexpected error occurred while adding the item. Please try again."
+      );
+      setMessageVariant("danger");
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -22,9 +71,17 @@ function AddItemComp() {
         <Modal.Header closeButton>
           <Modal.Title>Add Item</Modal.Title>
         </Modal.Header>
+        {/* Display API response message */}
+        {message && (
+          <Alert
+            variant={messageVariant}
+            style={{ marginLeft: "10px", marginRight: "10px" }}
+          >
+            {message}
+          </Alert>
+        )}
         <Modal.Body>
           {" "}
-          {/* TODO: CHANGE FORM ACTION */}
           <Form
             action="/api/inventory/add-item"
             method="post"
@@ -35,10 +92,10 @@ function AddItemComp() {
               <Form.Label>Item Name:</Form.Label>
               <Form.Control
                 type="text"
-                name="item_name"
+                name="itemName"
                 placeholder="Enter item name"
-                // value={firstname} // Bind to state
-                // onChange={(e) => setFirstname(e.target.value)} // Update state on input
+                value={itemName} // Bind to state
+                onChange={(e) => setItemName(e.target.value)} // Update state on input
                 required
               />
             </Form.Group>
@@ -51,10 +108,10 @@ function AddItemComp() {
               <Form.Label>Item Description:</Form.Label>
               <Form.Control
                 type="text"
-                name="item_des"
+                name="itemDes"
                 placeholder="Describe item"
-                // value={lastname} // Bind to state
-                // onChange={(e) => setLastname(e.target.value)} // Update state on input
+                value={itemDes} // Bind to state
+                onChange={(e) => setItemDes(e.target.value)} // Update state on input
                 required
               />
             </Form.Group>
@@ -66,8 +123,8 @@ function AddItemComp() {
                 type="number"
                 name="quantity"
                 placeholder="Enter item quantity"
-                // value={username} // Bind to state
-                // onChange={(e) => setUsername(e.target.value)} // Update state on input
+                value={quantity} // Bind to state
+                onChange={(e) => setQuantity(e.target.value)} // Update state on input
                 required
               />
             </Form.Group>
@@ -77,7 +134,7 @@ function AddItemComp() {
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" type="submit" onClick={handleSubmitClick}>
             Add Item
           </Button>
         </Modal.Footer>

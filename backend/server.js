@@ -18,7 +18,7 @@ app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false })); // .urlencoded - parsing URL encoded data from the body, extended: false uses QueryString library
 app.use(express.json());
 app.use("/api/auth", authRoutes); // Whenever a request starts with this path, hand it off to this router or middleware.
-app.use("api/inventory", inventoryRoutes);
+app.use("/api/inventory", inventoryRoutes);
 
 app.use(cors());
 

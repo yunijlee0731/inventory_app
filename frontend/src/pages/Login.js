@@ -26,8 +26,12 @@ function Login() {
   const handleButtonClick = async (event) => {
     event.preventDefault();
     try {
+      console.log(requestOptions.username);
+      console.log(requestOptions.password);
+
       const response = await fetch("/api/auth/login", requestOptions);
       const data = await response.json();
+
       console.log(data.success);
       console.log(data.username);
       console.log(data.id);
@@ -35,7 +39,7 @@ function Login() {
         setMessage(data.message);
         setMessageVariant("success");
         sessionStorage.setItem("username", data.username);
-        sessionStorage.setItem("id", data.id);
+        sessionStorage.setItem("userId", data.id);
         navigate("/user-inventory");
       } else if (data.success === false) {
         setMessage(data.message);

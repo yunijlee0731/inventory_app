@@ -17,7 +17,6 @@ exports.checkLogin = async (req, res) => {
           data,
         });
       } else {
-        console.log("\tYJ: DEBUGGING Password is incorrect");
         return res.status(404).send({
           // If no data, send 404 response
           success: false,
@@ -34,15 +33,12 @@ exports.checkLogin = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(
-      "\t*************** YJ: ERROR in auth-controller.js in checkLogin function: PRINTING STACK TRACE*************"
-    );
-    console.error("Error:", error);
     if (!res.headersSent) {
       // Check if headers are already sent
       return res.status(500).send({
         success: false,
-        message: "ERROR in auth-controller.js, in checkLogin function",
+        message:
+          "Backend ERROR in auth-controller.js, in checkLogin function, header already sent",
         error: error.message,
       });
     }
@@ -69,7 +65,7 @@ exports.checkUserCreation = async (req, res) => {
       console.log("User registered with ID:", result.insertId);
       return res.status(200).send({
         success: true,
-        message: "Account created succesfully!",
+        message: "Account created succesfully! Proceed to Login.",
         data,
       });
     } else {

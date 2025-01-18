@@ -11,48 +11,20 @@ const cors = require("cors"); // provides express middleware
 const authRoutes = require("./routes/auth-routes"); // import authentication route, allows you to reuse logic from this file
 const mySqlPool = require("./config/db-config");
 
-// var corsOptions = { // cors middlware checks if the Oriign header matches the origin value in corsOptions.
-// 	origin: "http://localhost:3000/"
-// };
 dotenv.config();
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false })); // .urlencoded - parsing URL encoded data from the body, extended: false uses QueryString library
 app.use(express.json());
 app.use("/api/auth", authRoutes); // Whenever a request starts with this path, hand it off to this router or middleware.
-// app.use(cors(corsOptions));
-var corsOptions = {
-  origin: "http://localhost:3000",
-};
 
-app.use(cors(corsOptions));
-// app.use(cors());
-// app.use(
-//   cors({
-//     origin: "http://localhost:3000", // Allow requests from this origin
-//     methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
-//     credentials: true, // Include credentials (if needed)
-//   })
-// );
+app.use(cors());
 
-app.get("/", (req, res) => {
-  // res.sendFile(path.join(__dirname, '../frontend_test/static/index.html'));
-  // res.sendFile(path.join(__dirname, '../frontend/src/App.js'));
-  res.json({ succes: true });
-});
-
-//******************* DATABASE *******************/
-// The user should not forget to summon the sync() method in the server.js.
-// const db = require("./app/models");
-// db.sequelize.sync();
-
-// db.sequelize.sync({force: true}).then(() => { // When you need to drop the existing tables and the database is required to be resynchronized, enter the force: true code like the below:
-//     console.log("Drop and resync db.");
-
+// app.get("/", (req, res) => {
+//   res.json({ succes: true });
 // });
-//******************* DATABASE *******************/
 
-const port = process.env.PORT || 3001; // Port we will listen on, in cloud services, this might be const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 mySqlPool
   .query("SELECT 1")
   .then(() => {

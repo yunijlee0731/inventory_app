@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button, Card, Alert } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-const BACKEND_URL = "http://localhost:3001";
 
 function SignUp() {
   //   State to manage form inputs
@@ -29,13 +28,6 @@ function SignUp() {
   const handleButtonClick = async (event) => {
     event.preventDefault();
     try {
-      //   await fetch(`${BACKEND_URL}/api/auth/signup`, requestOptions).then(
-      //     (response) => {
-      //       response.json().then((data) => {
-      //         Alert.alert("Post created at : ", data.createdAt);
-      //       });
-      //     }
-      //   );
       const response = await fetch("/api/auth/signup", requestOptions);
       const data = await response.json();
       console.log(data.success);
@@ -47,49 +39,13 @@ function SignUp() {
         setMessageVariant("danger");
       }
     } catch (error) {
-      setMessage("An unexpected error occurred. Please try again.");
+      setMessage(
+        "An unexpected error occurred while creating account. Please try again."
+      );
       setMessageVariant("danger");
       console.error(error);
     }
   };
-
-  //   const handleButtonClick = async (event) => {
-  // event.preventDefault();
-  // try {
-  //   console.log("!!!!!!!!!Button clicked");
-  //   console.log(firstname, lastname, username, password);
-  //   // Call the API when the button is clicked
-  //   const response = await fetch(`${BACKEND_URL}/api/auth/signup`, {
-  //     mode: "no-cors",
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       firstname,
-  //       lastname,
-  //       username,
-  //       password,
-  //     }),
-  //   });
-  //   // Wait for the API response and parse it
-  //   const result = await response.json();
-  //   if (response.ok) {
-  //     // Handle successful API response
-  //     setMessage(result.message || "Action completed successfully!");
-  //     setMessageVariant("success");
-  //   } else {
-  //     // Handle errors from the API
-  //     setMessage(result.message || "An error occurred.");
-  //     setMessageVariant("danger");
-  //   }
-  // } catch (error) {
-  //   // Handle unexpected errors (e.g., network issues)
-  //   setMessage("An unexpected error occurred. Please try again.");
-  //   setMessageVariant("danger");
-  // }
-  // console.log(message);
-  //   };
 
   return (
     <div className="App">
@@ -166,6 +122,10 @@ function SignUp() {
               >
                 Submit
               </Button>
+
+              <Link className="App-link mt-3 d-block text-primary" to="/login">
+                Login here
+              </Link>
             </Form>
           </Card.Body>
         </Card>

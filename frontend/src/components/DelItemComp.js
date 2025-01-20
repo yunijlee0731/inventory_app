@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 
-function DelItemComp() {
+function DelItemComp({ currSelectedRow }) {
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -12,7 +11,13 @@ function DelItemComp() {
     <>
       <Button
         variant="primary"
-        onClick={handleShow}
+        onClick={() => {
+          if (currSelectedRow) {
+            console.log("Performing action for:", currSelectedRow);
+          }
+          handleShow();
+        }}
+        disabled={!currSelectedRow}
         style={{ marginLeft: "10px", marginTop: "10px", marginBottom: "10px" }}
       >
         Delete Item

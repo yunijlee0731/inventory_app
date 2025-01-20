@@ -108,7 +108,7 @@ function Login() {
               </Link>
               <Link
                 className="App-link mt-3 d-block text-primary"
-                to="/viewallinventory"
+                to="/view-all-inventory"
               >
                 Continue as a Visitor
               </Link>

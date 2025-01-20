@@ -1,7 +1,6 @@
 const db = require("../config/db-config");
 
 exports.addItem = async (req, res) => {
-  console.log("!!!!!!!!!!!Did we make it to the inventory controller?");
   try {
     const query = `
                 INSERT INTO items (user_id, item_name, description, quantity)
@@ -65,13 +64,11 @@ exports.viewUserInventory = async (req, res) => {
 };
 
 exports.viewAllInventory = async (req, res) => {
-  console.log("WHY NOT");
   try {
     // Extract userId from query parameters
     //   const userId = Number(req.query.userId);
 
     // SQL query to fetch items for the user
-    console.log("!!!!!!!!!!!!!!!!!!!!!!HEREE");
     const query = `SELECT * FROM items`;
 
     const [result] = await db.execute(query);

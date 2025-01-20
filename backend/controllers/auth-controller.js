@@ -2,7 +2,6 @@
 const db = require("../config/db-config");
 
 exports.checkLogin = async (req, res) => {
-  console.log("!!!!!!!!!!!Did we make it to the auth controller?");
   try {
     const [data] = await db.query("SELECT * FROM users WHERE username = ?", [
       req.body.username,

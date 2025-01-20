@@ -39,11 +39,6 @@ const ViewAllInventory = () => {
       editable: false,
     };
   }, []);
-  const rowSelection = useMemo(() => {
-    return {
-      mode: "singleRow",
-    };
-  }, []);
 
   const requestOptions = {
     method: "GET", // Use GET method

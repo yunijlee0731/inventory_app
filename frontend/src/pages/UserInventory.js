@@ -28,7 +28,13 @@ ModuleRegistry.registerModules([
   ValidationModule /* Development Only */,
 ]);
 
-const UserInventory = () => {
+export const userInventoryWindow = window.location;
+//   const currWindow = window.location;
+//   console.log(currWindow);
+//   window.location.reload();
+// };
+
+export const UserInventory = () => {
   // const containerStyle = useMemo(
   //   () => ({ width: "100%", height: "600px" }),
   //   []
@@ -36,6 +42,7 @@ const UserInventory = () => {
   // // <div style={{ width: "50%", height: "400px" }}></div>
   // const gridStyle = useMemo(() => ({ height: "50%", width: "400px" }), [];
   // var currSelectedRow = null;
+
   const [currSelectedRow, setCurrSelectedRow] = useState(null);
   const [rowData, setRowData] = useState();
   const [columnDefs, setColumnDefs] = useState([
@@ -105,6 +112,7 @@ const UserInventory = () => {
           </a>
         </div>
       </nav>
+
       <div
         style={{
           display: "flex",
@@ -142,4 +150,4 @@ const UserInventory = () => {
   );
 };
 
-export default UserInventory;
+// export default UserInventory;

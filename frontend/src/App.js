@@ -9,7 +9,7 @@ import SignUp from "./pages/SignUp";
 import ViewAllInventory from "./pages/ViewAllInventory";
 import TableDemo from "./pages/TableDemo";
 
-import UserInventory from "./pages/UserInventory";
+import { UserInventory } from "./pages/UserInventory";
 
 function App() {
   return (

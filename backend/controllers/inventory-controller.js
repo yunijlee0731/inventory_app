@@ -97,3 +97,33 @@ exports.viewAllInventory = async (req, res) => {
     });
   }
 };
+
+exports.deleteItem = async (req, res) => {
+  const itemID = req.body.itemID;
+  console.log("Inventory controller.js, deleting itemID: ", itemID);
+  try {
+    const query = `DELETE FROM items WHERE id = ?`;
+    const values = [Number(itemID)]; // Use prepared statement to prevent SQL injection
+
+    const result = await db.execute(query, values);
+    // console.log("Inventory controller.js - what is the result: ", result);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).send({
+        success: false,
+        message: "No item found with the specified ID",
+      });
+    }
+
+    return res.status(200).send({
+      success: true,
+      message: "Item deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting item:", error);
+    return res.status(500).send({
+      success: false,
+      message: "An error occurred while deleting the item",
+    });
+  }
+};

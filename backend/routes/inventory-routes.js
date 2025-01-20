@@ -9,6 +9,8 @@ var router = express.Router(); // a router is a mini version of the express app.
 // sends response
 router.post("/add-item", inventoryController.addItem);
 
+router.delete("/delete-item", inventoryController.deleteItem);
+
 router.get("/view-user-inventory", inventoryController.viewUserInventory);
 
 router.get("/view-all-inventory", inventoryController.viewAllInventory);

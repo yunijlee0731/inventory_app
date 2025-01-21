@@ -8,14 +8,6 @@ export default function cellRenderer(props) {
     });
     console.log(props);
   };
-  // return (
-  //   <span>
-  //     <button style={{ height: "30px" }} onClick={handleClick}>
-  //       ✎
-  //     </button>
-  //     <span style={{ paddingLeft: "5px" }}>{props.value}</span>
-  //   </span>
-  // );
   return (
     <span>
       <button

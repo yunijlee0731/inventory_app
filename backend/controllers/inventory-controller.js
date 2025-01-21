@@ -164,3 +164,39 @@ exports.updateItem = async (req, res) => {
     });
   }
 };
+
+exports.viewSingleItem = async (req, res) => {
+  try {
+    // Extract userId from query parameters
+    const itemID = Number(req.query.itemID);
+
+    // SQL query to fetch items for the user
+    const query = `
+                      SELECT * FROM items
+                      WHERE id = ?`;
+
+    const [result] = await db.execute(query, [itemID]);
+
+    if (result.length > 0) {
+      // Items found for the user
+      //   console.log(result);
+      return res.status(200).send({
+        success: true,
+        message: "Items successfully retrieved!",
+        result,
+      });
+    } else {
+      // No items found for the user
+      return res.status(404).send({
+        success: false,
+        message: "No items found for the given user ID.",
+      });
+    }
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).send({
+      success: false,
+      message: "Error retrieving items.",
+    });
+  }
+};

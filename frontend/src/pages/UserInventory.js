@@ -12,6 +12,7 @@ import { Button } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import AddItemComp from "../components/AddItemComp";
 import DelItemComp from "../components/DelItemComp";
+import ViewOneItem from "../components/ViewOneItem";
 import { AgGridReact } from "ag-grid-react";
 import CellRenderer from "../CellRenderer";
 import { updateItem } from "../components/EditItemHelper";
@@ -177,6 +178,7 @@ export const UserInventory = () => {
           <div>
             <AddItemComp />
             <DelItemComp currSelectedRow={currSelectedRow} />
+            <ViewOneItem currSelectedRow={currSelectedRow} />
 
             <Modal show={show} onHide={handleClose}>
               <Modal.Header>

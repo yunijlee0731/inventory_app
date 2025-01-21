@@ -15,6 +15,8 @@ router.get("/view-user-inventory", inventoryController.viewUserInventory);
 
 router.get("/view-all-inventory", inventoryController.viewAllInventory);
 
+router.get("/view-single-item", inventoryController.viewSingleItem);
+
 router.put("/update-item", inventoryController.updateItem);
 
 // router.get("/view-all-inventory", inventoryController.viewAllInventory);

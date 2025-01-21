@@ -11,9 +11,10 @@
 - The port is set to 3001, which is defined in the backend/.env file. You can also directly change the port number in backend/server.js by modifying line 29 (const port = process.env.PORT || 3001;)
 
 - How to run:
-- cd to <your file path>/inventory-app/backend
-- Run the command `npm install`
-- Run the command `npm run dev` or `npm start`
+
+  > cd to <your file path>/inventory-app/backend
+  > Run the command `npm install`
+  > Run the command `npm run dev` or `npm start`
 
 - Details about the database:
   -- The database name is "inventory_db"
@@ -22,6 +23,6 @@
 ## Frontend
 
 - How to run:
-- cd to <your file path>/inventory-app/frontend
-- Run the command `yarn install`
-- Run the command `yarn start`
+  > cd to <your file path>/inventory-app/frontend
+  > Run the command `yarn install`
+  > Run the command `yarn start`

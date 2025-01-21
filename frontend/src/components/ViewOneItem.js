@@ -68,10 +68,12 @@ function ViewOneItem({ currSelectedRow }) {
         <Modal.Header>
           <Modal.Title>Item Details</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <p style={{ color: messageVariant === "success" ? "black" : "red" }}>
-            {message}
-          </p>
+        <Modal.Body
+          style={{ overflowWrap: "break-word", wordWrap: "break-word" }}
+        >
+          {/* <p style={{ color: messageVariant === "success" ? "black" : "red" }}> */}
+          {message}
+          {/* </p> */}
         </Modal.Body>
         <Modal.Footer>
           <Button

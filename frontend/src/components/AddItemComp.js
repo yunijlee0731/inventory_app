@@ -36,26 +36,52 @@ function AddItemComp() {
 
   const handleSubmitClick = async (event) => {
     event.preventDefault();
-    try {
-      const response = await fetch("/api/inventory/add-item", requestOptions);
-      const data = await response.json();
-      console.log(data.success);
 
-      // TODO: When item is succesfully added, you need to clear the parameters since they are saved from the last one, then you need to refresh the table to update it with the new entry
-      if (data.success === true) {
-        setMessage(data.message);
-        setMessageVariant("success");
-        refreshPage();
-      } else if (data.success === false) {
-        setMessage(data.message);
-        setMessageVariant("danger");
-      }
-    } catch (error) {
-      setMessage(
-        "An unexpected error occurred while adding the item. Please try again."
-      );
+    var shouldAdd = true;
+    console.log("null", itemName, itemName === null);
+    console.log(quantity, itemName === null);
+    console.log(itemDes, itemName === null);
+    if (itemName === null || quantity === null || itemDes === null) {
+      setMessage("All parameters must be filled out");
       setMessageVariant("danger");
-      console.error(error);
+      shouldAdd = false;
+    }
+
+    console.log("trim", itemName.trim(), itemName === "");
+    console.log(itemDes.trim(), itemDes === "");
+    if (
+      userId.trim() === "" ||
+      itemName.trim() === "" ||
+      itemDes.trim() === "" ||
+      quantity === ""
+    ) {
+      console.log("Should be here");
+      setMessage("All parameters must be filled out");
+      setMessageVariant("danger");
+      shouldAdd = false;
+    }
+    if (shouldAdd) {
+      try {
+        const response = await fetch("/api/inventory/add-item", requestOptions);
+        const data = await response.json();
+        console.log(data.success);
+
+        // TODO: When item is succesfully added, you need to clear the parameters since they are saved from the last one, then you need to refresh the table to update it with the new entry
+        if (data.success === true) {
+          setMessage(data.message);
+          setMessageVariant("success");
+          refreshPage();
+        } else if (data.success === false) {
+          setMessage(data.message);
+          setMessageVariant("danger");
+        }
+      } catch (error) {
+        setMessage(
+          "An unexpected error occurred while adding the item. Please try again."
+        );
+        setMessageVariant("danger");
+        console.error(error);
+      }
     }
   };
 

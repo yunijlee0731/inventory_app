@@ -9,6 +9,7 @@ import React, {
   StrictMode,
 } from "react";
 import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 import AddItemComp from "../components/AddItemComp";
 import DelItemComp from "../components/DelItemComp";
@@ -39,14 +40,6 @@ export const userInventoryWindow = window.location;
 // };
 
 export const UserInventory = () => {
-  // const containerStyle = useMemo(
-  //   () => ({ width: "100%", height: "600px" }),
-  //   []
-  // );
-  // // <div style={{ width: "50%", height: "400px" }}></div>
-  // const gridStyle = useMemo(() => ({ height: "50%", width: "400px" }), [];
-  // var currSelectedRow = null;
-
   const [show, setShow] = useState(false);
   // State to manage API response messages
   const [message, setMessage] = useState("");
@@ -58,9 +51,18 @@ export const UserInventory = () => {
   const [rowData, setRowData] = useState();
   const [columnDefs, setColumnDefs] = useState([
     { field: "item_name", minWidth: 180 },
-    { field: "description" },
+    { field: "description", minWidth: 400 },
     { field: "quantity", minWidth: 160 },
   ]);
+
+  // const gridOptions = {
+  //   components: {
+  //     // loadingOverlay: () => null, // No loading overlay
+  //     defaultColDef: {
+  //       loadingCellRenderer: () => '',
+  //   },
+  //   },
+  // };
 
   const defaultColDef = useMemo(() => {
     return {
@@ -72,6 +74,14 @@ export const UserInventory = () => {
       cellRenderer: CellRenderer,
     };
   }, []);
+
+  const loadingCellRenderer = useCallback(() => {}, []);
+  const loadingCellRendererParams = useMemo(() => {
+    return {
+      loadingMessage: " ",
+    };
+  }, []);
+
   const rowSelection = useMemo(() => {
     return {
       mode: "singleRow",
@@ -91,8 +101,22 @@ export const UserInventory = () => {
     )
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data);
-        setRowData(data.result);
+        console.log(data.result);
+        if (data.success === true) {
+          setRowData(data.result);
+        }
+        // else if (data.message === "No items found for the given user ID.") {
+        //   var temp = [
+        //     {
+        //       id: 0,
+        //       user_id: 0,
+        //       item_name: "No items to display",
+        //       description: "No items to display",
+        //       quantity: 0,
+        //     },
+        //   ];
+        //   setRowData(temp);
+        // }
       });
   }, []);
 
@@ -137,15 +161,35 @@ export const UserInventory = () => {
 
   return (
     <div style={{ backgroundColor: "#282c34" }}>
-      <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="/user-inventory">
-            My Inventory
-          </a>
-          <a class="navbar-brand" href="/view-all-inventory">
-            View All Inventory
-          </a>
-        </div>
+      <nav class="navbar navbar-expand-lg bg-body-tertiary ">
+        <form className="container-fluid justify-content-start">
+          {sessionStorage.getItem("userId") && ( // Render only if userId exists
+            <Link to="/user-inventory">
+              <button className="btn btn-outline-success me-2" type="button">
+                My Inventory
+              </button>
+            </Link>
+          )}
+          <Link to="/view-all-inventory">
+            <button className="btn btn-outline-success me-2" type="button">
+              View All Inventory
+            </button>
+          </Link>
+        </form>
+
+        <form className="container-fluid justify-content-end">
+          <Link to="/login">
+            <button
+              className="btn btn-outline-success me-2"
+              type="button"
+              onClick={() => {
+                sessionStorage.clear();
+              }}
+            >
+              Logout
+            </button>
+          </Link>
+        </form>
       </nav>
 
       <div
@@ -159,57 +203,61 @@ export const UserInventory = () => {
       >
         <Card
           style={{
-            width: "50rem",
+            width: "80rem",
           }}
         >
-          <div style={{ width: "100%", height: "400px" }}>
-            <AgGridReact
-              rowData={rowData}
-              columnDefs={columnDefs}
-              defaultColDef={defaultColDef}
-              suppressClickEdit={true}
-              onGridReady={onGridReady}
-              onCellEditingStopped={onCellEditingStopped}
-              rowSelection={rowSelection}
-              onSelectionChanged={onSelectionChanged}
-              // onRowSelected={onRowSelected}
-            />
-          </div>
-          <div>
-            <AddItemComp />
-            <DelItemComp currSelectedRow={currSelectedRow} />
-            <ViewOneItem currSelectedRow={currSelectedRow} />
+          <Card.Body>
+            <Card.Text class="fs-2">My Inventory</Card.Text>
+            <div style={{ width: "100%", height: "500px" }}>
+              <AgGridReact
+                rowData={rowData}
+                columnDefs={columnDefs}
+                defaultColDef={defaultColDef}
+                suppressClickEdit={true}
+                onGridReady={onGridReady}
+                onCellEditingStopped={onCellEditingStopped}
+                rowSelection={rowSelection}
+                onSelectionChanged={onSelectionChanged}
+                loadingCellRenderer={loadingCellRenderer}
+                loadingCellRendererParams={loadingCellRendererParams}
+                // gridOptions={gridOptions}
+                // onRowSelected={onRowSelected}
+              />
+            </div>
+            <div>
+              <AddItemComp />
+              <DelItemComp currSelectedRow={currSelectedRow} />
+              <ViewOneItem currSelectedRow={currSelectedRow} />
 
-            <Modal show={show} onHide={handleClose}>
-              <Modal.Header>
-                <Modal.Title>Message</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <p
-                  style={{
-                    color: messageVariant === "success" ? "green" : "red",
-                  }}
-                >
-                  {message}
-                </p>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button
-                  variant="secondary"
-                  onClick={() => {
-                    handleClose();
-                    userInventoryWindow.reload();
-                  }}
-                >
-                  Close
-                </Button>
-              </Modal.Footer>
-            </Modal>
-          </div>
+              <Modal show={show} onHide={handleClose}>
+                <Modal.Header>
+                  <Modal.Title>Message</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <p
+                    style={{
+                      color: messageVariant === "success" ? "green" : "red",
+                    }}
+                  >
+                    {message}
+                  </p>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button
+                    variant="secondary"
+                    onClick={() => {
+                      handleClose();
+                      userInventoryWindow.reload();
+                    }}
+                  >
+                    Close
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+            </div>
+          </Card.Body>
         </Card>
       </div>
     </div>
   );
 };
-
-// export default UserInventory;

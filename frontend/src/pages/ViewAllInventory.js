@@ -9,6 +9,7 @@ import React, {
   StrictMode,
 } from "react";
 import { AgGridReact } from "ag-grid-react";
+import { Link } from "react-router-dom";
 import ViewOneItem from "../components/ViewOneItem";
 import {
   ClientSideRowModelModule,
@@ -31,7 +32,7 @@ const ViewAllInventory = () => {
   const [currSelectedRow, setCurrSelectedRow] = useState(null);
   const [columnDefs, setColumnDefs] = useState([
     { field: "item_name", minWidth: 180 },
-    { field: "description" },
+    { field: "description", minWidth: 180 },
     { field: "quantity", minWidth: 160 },
   ]);
   const defaultColDef = useMemo(() => {
@@ -78,7 +79,7 @@ const ViewAllInventory = () => {
 
   return (
     <div style={{ backgroundColor: "#282c34" }}>
-      <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      {/* <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
           <a class="navbar-brand" href="/user-inventory">
             My Inventory
@@ -87,6 +88,49 @@ const ViewAllInventory = () => {
             Navbar
           </a>
         </div>
+      </nav> */}
+
+      <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        {sessionStorage.getItem("userId") && ( // Render only if userId exists
+          <form className="container-fluid justify-content-start">
+            <Link to="/user-inventory">
+              <button className="btn btn-outline-success me-2" type="button">
+                My Inventory
+              </button>
+            </Link>
+            <Link to="/view-all-inventory">
+              <button className="btn btn-outline-success me-2" type="button">
+                View All Inventory
+              </button>
+            </Link>
+          </form>
+        )}
+
+        {sessionStorage.getItem("userId") && (
+          <form className="container-fluid justify-content-end">
+            <Link to="/login">
+              <button
+                className="btn btn-outline-success me-2"
+                type="button"
+                onClick={() => {
+                  sessionStorage.clear();
+                }}
+              >
+                Logout
+              </button>
+            </Link>
+          </form>
+        )}
+
+        {!sessionStorage.getItem("userId") && (
+          <form className="container-fluid justify-content-end">
+            <Link to="/login">
+              <button className="btn btn-outline-success me-2" type="button">
+                Login
+              </button>
+            </Link>
+          </form>
+        )}
       </nav>
       <div
         style={{
@@ -99,23 +143,27 @@ const ViewAllInventory = () => {
       >
         <Card
           style={{
-            width: "50rem",
+            width: "80rem",
           }}
         >
-          <div style={{ width: "100%", height: "400px" }}>
-            <AgGridReact
-              rowData={rowData}
-              columnDefs={columnDefs}
-              defaultColDef={defaultColDef}
-              suppressClickEdit={true}
-              onGridReady={onGridReady}
-              rowSelection={rowSelection}
-              onSelectionChanged={onSelectionChanged}
-            />
-          </div>
-          <div>
-            <ViewOneItem currSelectedRow={currSelectedRow} />
-          </div>
+          {/* <Card.Title>All Inventory</Card.Title> */}
+          <Card.Body>
+            <Card.Text class="fs-2">All Inventory</Card.Text>
+            <div style={{ width: "100%", height: "500px" }}>
+              <AgGridReact
+                rowData={rowData}
+                columnDefs={columnDefs}
+                defaultColDef={defaultColDef}
+                suppressClickEdit={true}
+                onGridReady={onGridReady}
+                rowSelection={rowSelection}
+                onSelectionChanged={onSelectionChanged}
+              />
+            </div>
+            <div>
+              <ViewOneItem currSelectedRow={currSelectedRow} />
+            </div>
+          </Card.Body>
         </Card>
       </div>
     </div>

@@ -75,7 +75,6 @@ exports.viewAllInventory = async (req, res) => {
 
     if (result.length > 0) {
       // Items found for the user
-      console.log(result);
       return res.status(200).send({
         success: true,
         message: "Items successfully retrieved!",

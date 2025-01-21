@@ -8,10 +8,13 @@ import React, {
   useState,
   StrictMode,
 } from "react";
+import { Button } from "react-bootstrap";
+import Modal from "react-bootstrap/Modal";
 import AddItemComp from "../components/AddItemComp";
 import DelItemComp from "../components/DelItemComp";
 import { AgGridReact } from "ag-grid-react";
 import CellRenderer from "../CellRenderer";
+import { updateItem } from "../components/EditItemHelper";
 import {
   ClientSideRowModelModule,
   ModuleRegistry,
@@ -43,6 +46,13 @@ export const UserInventory = () => {
   // const gridStyle = useMemo(() => ({ height: "50%", width: "400px" }), [];
   // var currSelectedRow = null;
 
+  const [show, setShow] = useState(false);
+  // State to manage API response messages
+  const [message, setMessage] = useState("");
+  const [messageVariant, setMessageVariant] = useState("success");
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const [currSelectedRow, setCurrSelectedRow] = useState(null);
   const [rowData, setRowData] = useState();
   const [columnDefs, setColumnDefs] = useState([
@@ -50,6 +60,7 @@ export const UserInventory = () => {
     { field: "description" },
     { field: "quantity", minWidth: 160 },
   ]);
+
   const defaultColDef = useMemo(() => {
     return {
       flex: 1,
@@ -85,9 +96,32 @@ export const UserInventory = () => {
   }, []);
 
   const onCellEditingStopped = useCallback((event) => {
-    console.log("Editing stopped on:", event.colDef.field);
-    console.log("Updated value:", event.value);
-    console.log("Full row data:", event.data);
+    var shouldUpdate = true;
+    if (event.value === null) {
+      setMessage("Value is null, field cannot be empty");
+      setMessageVariant("danger");
+      handleShow();
+      shouldUpdate = false;
+    } else if (event.colDef.field !== "quantity") {
+      var trimmedVal = event.value.trim();
+      if (trimmedVal === "") {
+        setMessage("Field cannot be empty");
+        setMessageVariant("danger");
+        handleShow();
+        shouldUpdate = false;
+      }
+    }
+    if (shouldUpdate) {
+      console.log("EDITING ITEM");
+      var data = updateItem(
+        event.data.id,
+        event.data.user_id,
+        event.data.item_name,
+        event.data.description,
+        event.data.quantity,
+        userInventoryWindow
+      );
+    }
   }, []);
 
   // logic to handle when row is selected and not selected
@@ -143,6 +177,32 @@ export const UserInventory = () => {
           <div>
             <AddItemComp />
             <DelItemComp currSelectedRow={currSelectedRow} />
+
+            <Modal show={show} onHide={handleClose}>
+              <Modal.Header>
+                <Modal.Title>Message</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <p
+                  style={{
+                    color: messageVariant === "success" ? "green" : "red",
+                  }}
+                >
+                  {message}
+                </p>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    handleClose();
+                    userInventoryWindow.reload();
+                  }}
+                >
+                  Close
+                </Button>
+              </Modal.Footer>
+            </Modal>
           </div>
         </Card>
       </div>

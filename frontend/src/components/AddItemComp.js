@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import { useNavigate } from "react-router-dom";
+import { userInventoryWindow } from "../pages/UserInventory";
 
 function AddItemComp() {
   const navigate = useNavigate();
@@ -69,7 +70,7 @@ function AddItemComp() {
       </Button>
 
       <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title>Add Item</Modal.Title>
         </Modal.Header>
         {/* Display API response message */}
@@ -132,7 +133,13 @@ function AddItemComp() {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              handleClose();
+              userInventoryWindow.reload();
+            }}
+          >
             Cancel
           </Button>
           <Button variant="primary" type="submit" onClick={handleSubmitClick}>

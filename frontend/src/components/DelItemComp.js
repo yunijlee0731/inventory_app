@@ -13,14 +13,6 @@ function DelItemComp({ currSelectedRow }) {
 
   const userId = sessionStorage.getItem("userId");
 
-  //   const requestOptions = {
-  //     method: "DELETE",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify({
-  //       itemID,
-  //     }),
-  //   };
-
   const handleDeleteClick = async (itemID) => {
     console.log("current itemId", itemID);
     // console.log("Performing delete action for:", currSelectedRow.id);
@@ -32,6 +24,7 @@ function DelItemComp({ currSelectedRow }) {
         itemID,
       }),
     };
+
     try {
       const response = await fetch(
         "/api/inventory/delete-item",
@@ -41,11 +34,11 @@ function DelItemComp({ currSelectedRow }) {
       console.log("DelItemComp.js Success?: ", data.success);
       console.log("DelItemComp.js Message: ", data.message);
       if (data.success === true) {
-        // setMessage(data.message);
-        // setMessageVariant("success");
+        setMessage(data.message);
+        setMessageVariant("success");
       } else if (data.success === false) {
-        // setMessage(data.message);
-        // setMessageVariant("danger");
+        setMessage(data.message);
+        setMessageVariant("danger");
       }
     } catch (error) {
       setMessage(
@@ -75,13 +68,13 @@ function DelItemComp({ currSelectedRow }) {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header>
-          <Modal.Title>Confirm Item to Delete</Modal.Title>
+          <Modal.Title>Message</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {" "}
-          {/* TODO: CHANGE FORM ACTION */}
-          <Form action="/api/auth/signup" method="post">
-            {/* Password Input */}
+          <p style={{ color: messageVariant === "success" ? "green" : "red" }}>
+            {message}
+          </p>
+          {/* <Form>
             <Form.Group className="mb-3 text-start" controlId="formPassword">
               <Form.Label>Item ID:</Form.Label>
               <Form.Control
@@ -91,7 +84,7 @@ function DelItemComp({ currSelectedRow }) {
                 required
               />
             </Form.Group>
-          </Form>
+          </Form> */}
         </Modal.Body>
         <Modal.Footer>
           <Button

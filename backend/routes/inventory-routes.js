@@ -15,6 +15,8 @@ router.get("/view-user-inventory", inventoryController.viewUserInventory);
 
 router.get("/view-all-inventory", inventoryController.viewAllInventory);
 
+router.put("/update-item", inventoryController.updateItem);
+
 // router.get("/view-all-inventory", inventoryController.viewAllInventory);
 // router.get("/view-all-inventory", (req, res) => {
 //   console.log("DOES IT EVEN?!?");

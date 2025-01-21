@@ -127,3 +127,40 @@ exports.deleteItem = async (req, res) => {
     });
   }
 };
+
+exports.updateItem = async (req, res) => {
+  try {
+    const query = `
+        UPDATE items
+        SET user_id = ?, item_name = ?, description = ?, quantity = ?
+        WHERE id = ?;
+      `;
+    const values = [
+      req.body.userID,
+      req.body.itemName,
+      req.body.description,
+      Number(req.body.quantity),
+      Number(req.body.id),
+    ];
+
+    const [result] = await db.execute(query, values);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).send({
+        success: false,
+        message: "Item not found or no changes made.",
+      });
+    }
+    return res.status(200).send({
+      success: true,
+      message: "Item updated successfully!",
+      result,
+    });
+  } catch (error) {
+    console.error("Error updating item:", error.message);
+    return res.status(500).send({
+      success: false,
+      message: "An error occurred while updating the item.",
+    });
+  }
+};

@@ -9,6 +9,7 @@ import React, {
   StrictMode,
 } from "react";
 import { AgGridReact } from "ag-grid-react";
+import ViewOneItem from "../components/ViewOneItem";
 import {
   ClientSideRowModelModule,
   ModuleRegistry,
@@ -27,6 +28,7 @@ ModuleRegistry.registerModules([
 
 const ViewAllInventory = () => {
   const [rowData, setRowData] = useState();
+  const [currSelectedRow, setCurrSelectedRow] = useState(null);
   const [columnDefs, setColumnDefs] = useState([
     { field: "item_name", minWidth: 180 },
     { field: "description" },
@@ -37,6 +39,12 @@ const ViewAllInventory = () => {
       flex: 1,
       minWidth: 100,
       editable: false,
+    };
+  }, []);
+
+  const rowSelection = useMemo(() => {
+    return {
+      mode: "singleRow",
     };
   }, []);
 
@@ -57,6 +65,16 @@ const ViewAllInventory = () => {
       });
     // console.log(data);
   }, []);
+
+  // logic to handle when row is selected and not selected
+  const onSelectionChanged = (params) => {
+    const selectedNode = params.api.getSelectedNodes()[0];
+    if (selectedNode) {
+      setCurrSelectedRow(selectedNode.data); // Update state with the selected row data
+    } else {
+      setCurrSelectedRow(null); // Clear state when no row is selected
+    }
+  };
 
   return (
     <div style={{ backgroundColor: "#282c34" }}>
@@ -91,7 +109,12 @@ const ViewAllInventory = () => {
               defaultColDef={defaultColDef}
               suppressClickEdit={true}
               onGridReady={onGridReady}
+              rowSelection={rowSelection}
+              onSelectionChanged={onSelectionChanged}
             />
+          </div>
+          <div>
+            <ViewOneItem currSelectedRow={currSelectedRow} />
           </div>
         </Card>
       </div>

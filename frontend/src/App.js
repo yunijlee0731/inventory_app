@@ -7,7 +7,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import ViewAllInventory from "./pages/ViewAllInventory";
-import TableDemo from "./pages/TableDemo";
 
 import { UserInventory } from "./pages/UserInventory";
 

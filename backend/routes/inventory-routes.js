@@ -19,9 +19,4 @@ router.get("/view-single-item", inventoryController.viewSingleItem);
 
 router.put("/update-item", inventoryController.updateItem);
 
-// router.get("/view-all-inventory", inventoryController.viewAllInventory);
-// router.get("/view-all-inventory", (req, res) => {
-//   console.log("DOES IT EVEN?!?");
-// });
-
 module.exports = router; // Export the router

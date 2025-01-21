@@ -74,17 +74,6 @@ function DelItemComp({ currSelectedRow }) {
           <p style={{ color: messageVariant === "success" ? "green" : "red" }}>
             {message}
           </p>
-          {/* <Form>
-            <Form.Group className="mb-3 text-start" controlId="formPassword">
-              <Form.Label>Item ID:</Form.Label>
-              <Form.Control
-                type="text"
-                name="item_id"
-                placeholder="Item ID"
-                required
-              />
-            </Form.Group>
-          </Form> */}
         </Modal.Body>
         <Modal.Footer>
           <Button

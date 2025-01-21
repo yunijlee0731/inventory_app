@@ -49,8 +49,8 @@ exports.viewUserInventory = async (req, res) => {
       });
     } else {
       // No items found for the user
-      return res.status(404).send({
-        success: false,
+      return res.status(200).send({
+        success: true,
         message: "No items found for the given user ID.",
       });
     }
@@ -83,7 +83,7 @@ exports.viewAllInventory = async (req, res) => {
     } else {
       // No items found for the user
       console.log("Here");
-      return res.status(404).send({
+      return res.status(200).send({
         success: false,
         message: "No items were found.",
       });
@@ -147,7 +147,7 @@ exports.updateItem = async (req, res) => {
     if (result.affectedRows === 0) {
       return res.status(404).send({
         success: false,
-        message: "Item not found or no changes made.",
+        message: "Item not found.",
       });
     }
     return res.status(200).send({
